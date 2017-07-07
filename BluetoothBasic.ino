@@ -1,26 +1,105 @@
-/*
-* Bluetooh Basic: LED ON OFF - Avishkar
-* Coder - Mayoogh Girish
-* Website - http://bit.do/Avishkar
-* Download the App : https://github.com/Mayoogh/Arduino-Bluetooth-Basic
-* This program lets you to control a LED on pin 13 of arduino using a bluetooth module
-*/
-char data = 0;            //Variable for storing received data
-void setup()
+/*Developer: Frederik Hauke
+
+Important Notices:
+
+This Arduino-Code is written for Visualizating measurement data from a microcontroller via Bluetooth.
+
+Before starting this application, the Bluetooth-Modul (HC-05) has to be coupled to the Smartphone.In the special case of the HC-05 the default PinCode for initiating the Coupling-Process is "1234".
+
+Wiring: GND of HC-05 to GND Arduino, VCC of HC-05 to VCC Arduino, TX HC-05 to Arduino Pin 10 (RX) RX HC-05 to Arduino Pin 11 (TX) */
+
+#include <SoftwareSerial.h>
+
+//SoftwareSerial BTserial(10, 11); // RX | TX  # on uno
+SoftwareSerial BTserial(10, 9); // RX | TX     # on flora
+
+int sensorPin = A0;
+int sensorPin1 = A7;
+int sensorPin2 = A11;
+
+int sensorValue = 0;
+
+int sensorValue1, sensorValue2;
+
+void setup() 
 {
-    Serial.begin(9600);   //Sets the baud for serial data transmission                               
-    pinMode(13, OUTPUT);  //Sets digital pin 13 as output pin
+BTserial.begin(9600);
+Serial.begin(9600);
 }
-void loop()
-{
-   if(Serial.available() > 0)      // Send data only when you receive data:
-   {
-      data = Serial.read();        //Read the incoming data & store into data
-      Serial.print(data);          //Print Value inside data in Serial monitor
-      Serial.print("\n");        
-      if(data == '1')              // Checks whether value of data is equal to 1
-         digitalWrite(13, HIGH);   //If value is 1 then LED turns ON
-      else if(data == '0')         //  Checks whether value of data is equal to 0
-         digitalWrite(13, LOW);    //If value is 0 then LED turns OFF
-   }
+
+void loop() {
+
+sensorValue = analogRead(sensorPin);
+
+sensorValue1 = analogRead(sensorPin1);
+sensorValue2 = analogRead(sensorPin2);
+//sensorValue3 = analogRead(sensorPin3);
+
+//IMPORTANT: The complete String has to be of the Form: 1234,1234,1234,1234;
+
+//(every Value has to be seperated through a comma (',') and the message has to
+
+//end with a semikolon (';'))
+
+//BTserial.print(sensorValue);
+//
+//BTserial.print(",");
+//
+//BTserial.print(sensorValue1);
+//
+//BTserial.print(",");
+//
+//BTserial.print(sensorValue2);
+////
+//BTserial.print(",");
+//
+////BTserial.print("500 ml/s");
+//
+////BTserial.print(",");
+////
+////BTserial.print(sensorValue);
+////
+//BTserial.print(";");
+BTserial.print("sensorValue1= ");
+
+BTserial.print(sensorValue1);
+
+BTserial.print("\t");
+
+BTserial.print("sensorValue2= ");
+
+BTserial.println(sensorValue2);
+//
+//BTserial.print(",");
+//
+//BTserial.print(";");
+
+//Serial.print("1234");
+//
+//Serial.print(",");
+//
+//Serial.print(sensorValue);
+//
+//Serial.print(";");
+
+//BTserial.print("1234.0");
+//
+//BTserial.print(",");
+//
+//BTserial.print("1234 hPa");
+//
+//BTserial.print(",");
+//
+//BTserial.print("500 ml/s");
+//
+//BTserial.print(",");
+//
+//BTserial.print(sensorValue);
+//
+//BTserial.print(";");
+
+//message to the receiving device
+
+delay(20);
+
 }
